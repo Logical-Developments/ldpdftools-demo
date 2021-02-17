@@ -1,11 +1,11 @@
 /* -----------------------------------
 Copyright:      Logical Developments 2020.
-Project:        ConNote
 Filename:       ldpdftools.js
 Author:         Paul W Mulroney
-version:        0.00
-Description: 	Provides tools to add markup to PDF, merge PDFs etc
+version:        0.01
+Description: 	Provides tools to add markup to PDF, etc
 History:
+0.01    17-02-21 PWM   Updated for demo
 0.00    16-07-20 PWM   Created.
 ----------------------------------- */
 
@@ -23,10 +23,8 @@ const fs = require('fs');
 const methodMap = {
 
   add_watermark: async function(params,response) {
-    // See http://thecodebarbarian.com/working-with-pdfs-in-node-js.html
     // See https://pdf-lib.js.org/#modify-document
 
-    console.log('Begin add_watermark. filePath = %s, message = %s',params.filePath,params.message);
     autoSendResponse = true;  // We make async calls, so tell Omnis to wait for us to contact it ourselves.
 
     // Load the PDF to process
@@ -55,10 +53,6 @@ const methodMap = {
     const pdfBytes = await pdfDoc.save();
     fs.writeFileSync(params.filePath,pdfBytes); // Overwrite the file when we're done.
 
-    // Since this is async, we need to tell Omnis that wer'e done.
-    // Return the same params and response we received
-    // omnis_calls.sendResponse(params,response);  
-    console.log('Begin add_watermark.');
     return true;
   }
 
