@@ -25,8 +25,8 @@ const methodMap = {
   add_watermark: async function(params,response) {
     // See https://pdf-lib.js.org/#modify-document
 
-    autoSendResponse = true;  // We make async calls, so tell Omnis to wait for us to contact it ourselves.
-
+    autoSendResponse = true;  
+    
     // Load the PDF to process
     const existingPdfBytes = fs.readFileSync(params.filePath);
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
