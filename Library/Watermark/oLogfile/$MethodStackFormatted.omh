@@ -1,0 +1,11 @@
+# Format the method stack list as text
+# This is called often enough to be put somewhere useful!
+# IN: plMethodStack - the method stack at the moment
+# OUT: vsMethodStack - formatted
+For plMethodStack.$line from plMethodStack.$linecount to 1 step -1
+	Calculate vsFullName as con(plMethodStack.C1.$lib().$name,'.',plMethodStack.C1.$class().$name,'/',pick(plMethodStack.C2<>'','',con(plMethodStack.C2,'/')),plMethodStack.C3,'+',plMethodStack.C4) ## library.class/[object/]method+linenumber
+	Calculate vsMethodStack as con(vsMethodStack,plMethodStack.$line,kTab,vsFullName,kTab,plMethodStack.vsLineText,kCr,kLf)
+End For
+Quit method vsMethodStack
+# --- history
+# 07-03-18 PWM   (ld0008702) Created.

@@ -1,0 +1,29 @@
+#Add watermark to the PDF
+#IN:
+# psPath to pdf document to modify
+# psMessage to overlay on page 1
+# Returns True if successful
+
+# Validate inputs - in real life you'd probably return this in an error message
+Calculate vbSuccess as kFalse ## Assume that this call fails.
+If psPathToPDF=''
+	Breakpoint No PDF
+Else If psMessage=''
+	Breakpoint No message
+Else If FileOps.$doesfileexist(psPathToPDF)<>kTrue
+	Breakpoint File Doesn't Exist
+Else
+	#Validation passed, do the work
+	Do vrParams.$define(filePath,message)
+	Do vrParams.filePath.$assign(psPathToPDF)
+	Do vrParams.message.$assign(psMessage)
+	Do $cinst.$callmethod('ldpdftools','add_watermark',vrParams,kTrue,vsError) Returns #F
+	If flag true
+		Calculate vbSuccess as kTrue ## We succeeded!
+	Else ## Oops, something went wrong.
+		Breakpoint Something went wrong.  See $methoderror or $workererror, which would've returned something by now
+	End If
+End If
+Quit method
+# --- History
+# 12-02-21 PWM  Created

@@ -1,0 +1,33 @@
+# Rotate the given logfile
+# IN: logfile name
+
+# - See if there are any previous log files there
+Do FileOps.$splitpathname(psLogFilename,vsDrive,vsDir,vsFile,vsExt)
+Do FileOps.$filelist(kFileOpsIncludeFiles,con(vsDrive,vsDir),kFileOpsInfoName) Returns vlFiles
+Do vlFiles.$redefine(vsFileAndExt)
+Do vlFiles.$search(pos(vsFile,vsFileAndExt)=1,kTrue,kFalse,kTrue,kTrue) ## Find all matches where the filenames begin with the same name
+Do vlFiles.$remove(kListKeepSelected)
+
+Do vlLogsToRotate.$define(vsFileAndExt,vnIndex)
+Begin reversible block
+	Set current list vlFiles
+End reversible block
+For each line in list from 1 to #LN step 1
+	Load from list
+	Calculate vsThisFile as mid(vsFileAndExt,len(vsFile)+1,10)
+	Calculate vnIndex as mid(vsThisFile,1,pos('.',vsThisFile)-1) ## Strip trailing extension
+	Do vlLogsToRotate.$add(vsFileAndExt,vnIndex)
+End For
+
+# - Rename each file up one index.  Start at the end, work backwards
+Set current list vlLogsToRotate
+Do vlLogsToRotate.$sort(vnIndex,kTrue) ## Sort in ascending order
+For each line in list from 1 to #LN step 1 ## Step forwards.
+	Load from list
+	Calculate vsFromFile as con(vsDrive,vsDir,vsFileAndExt)
+	Calculate vsToFile as con(vsDrive,vsDir,vsFile,vnIndex+1,vsExt) ## eg logfilename1.txt
+	Do FileOps.$rename(vsFromFile,vsToFile) ## logfile1.txt -> logfile2.txt.  Obviously have to start at the end and work backwards otherwise we'll have problems overwriting files.
+End For
+Quit method
+# --- history
+# 09-02-10 PWM   Created.

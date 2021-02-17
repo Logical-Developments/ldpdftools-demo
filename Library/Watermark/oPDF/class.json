@@ -1,0 +1,36 @@
+{
+	"classtype": "kObjectclass",
+	"omnisversion": "10.1",
+	"internalversion": 25,
+	"superclass": ".OW3.OW3 Worker Objects\\JAVASCRIPTWorker",
+	"designtaskname": "Startup_Task",
+	"cvardefs": [
+
+	],
+	"ivardefs": [
+		{
+			"name": "ioLogfile",
+			"order": 1,
+			"type": "kObject",
+			"subtype": "oLogfile",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2021-02-12 08:44:54",
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"issupercomponent": false,
+		"moddate": "2021-02-17 15:55:33",
+		"selfcontained": false,
+		"showascheckedout": false,
+		"userinfo": "",
+		"version": ""
+	}
+}

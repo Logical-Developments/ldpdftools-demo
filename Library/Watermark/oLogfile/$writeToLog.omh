@@ -1,0 +1,44 @@
+# Writes the data passed to it to the file specified in the parameters
+# IN: logfilename to write to.  message to write. If no path specified, current Omnis dir.  Overwrite: True = always overwrite.  False (default)=Append
+
+Calculate pbOverWrite as pick(isnull(pbOverWrite),pbOverWrite,kFalse) ## Default to false if not specified.
+If pos(sys(9),psLogFileName)=0 ## no path specified
+	Do FileOps.$createdir(con(sys(115),'Logs')) ## Create the Logs directory, and put it all in there.
+	Calculate psLogFileName as con(sys(115),'Logs',sys(9),psLogFileName) ## Put the file in the Logs dir, in same dir as the omnis executable
+End If
+
+Calculate psMessage as con(psMessage,kCr,kLf) ## Ensure that each entry is on a new line.
+If pbOverWrite ## Always overwrite, so delete, then recreate
+	Do FileOps.$setunixpermissions(psLogFileName,'-rwxrwxrwx') ## 18-10-10 PWM   (mx0000902)Set permissions for User, Group, World to Read/Write/Execute ie full access.
+	Do FileOps.$deletefile(psLogFileName)
+	Do voFileOps.$createfile(psLogFileName) Returns vbCreateStatus
+	Do FileOps.$setunixpermissions(psLogFileName,'-rwxrwxrwx') ## 18-10-10 PWM   (mx0000902)Set permissions for User, Group, World to Read/Write/Execute ie full access.
+Else ## check if it already exists.  Create if it doesn't.
+	Do FileOps.$doesfileexist(psLogFileName) Returns vbFileExists
+	If not(vbFileExists)
+		Do voFileOps.$createfile(psLogFileName) Returns vbCreateStatus
+		Do FileOps.$setunixpermissions(psLogFileName,'-rwxrwxrwx') ## 18-10-10 PWM   (mx0000902)Set permissions for User, Group, World to Read/Write/Execute ie full access.
+	End If
+End If
+Do FileOps.$getfileinfo(psLogFileName,kFileOpsInfoActualSize) Returns vlFileInfo
+# - Open the file and write our message to it.
+Do voFileOps.$openfile(psLogFileName) Returns vbOpenStatus
+If not(vbOpenStatus) ## open failed
+	# Error in opening so we are stuffed.
+Else ## Opened the file, so do some stuff with it.
+	Calculate vnActualSize as vlFileInfo.actualsize
+	Do voFileOps.$writefile(chartoutf8(psMessage),vnActualSize)
+	Do voFileOps.$closefile(psLogFileName) ## Close the file if we successfully opened it.
+	If vnActualSize>(10*1024*1024) ## More than 10Mb, time to do a rotate.
+		Do method $rotateLog (psLogFileName) ## Rotate this log file
+	End If
+End If
+Quit method
+# ---History
+# 10-05-11 PWM  Unicode - write message in UTF8 format.
+# 18-10-10 PWM   (mx0000902)Set permissions for created files. Set permissions before deleting file.
+# 09-02-10 PWM   Added log rotation code.
+# 07-09-04 PWM   Relocated to Broker.  Needed before any other libs are opened.  Added overwrite option.
+# 02-09-04 PWM   Relocated to core manager object.
+# 01-09-04 DAM Continued in creation.
+# 25-08-04 DAM Created

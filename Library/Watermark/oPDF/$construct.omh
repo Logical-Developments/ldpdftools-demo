@@ -1,0 +1,9 @@
+# Enter your initialization code here
+# Link callback - here is where we point to for $methodreturn, $methoderror and $workererror
+Do $cinst.$callbackinst.$assign($cinst) Returns #F
+Do $cinst.$init()
+Do $cinst.$start()
+
+Quit method
+# --- history
+# 12-02-21 PWM   Created.

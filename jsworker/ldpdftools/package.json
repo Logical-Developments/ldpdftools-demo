@@ -1,0 +1,14 @@
+{
+  "name": "ldpdftools",
+  "version": "1.0.0",
+  "description": "Add signature and markup to PDF documents, merge pdf documents and other support routines for the LD modular system.",
+  "main": "ldpdftools.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Paul W Mulroney",
+  "license": "ISC",
+  "dependencies": {
+    "pdf-lib": "^1.9.0"
+  }
+}

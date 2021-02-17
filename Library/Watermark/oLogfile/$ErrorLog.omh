@@ -1,0 +1,5 @@
+# Append message to Error Log
+Do $cinst.$writeToLog('ErrorLog.txt',psMessage,kFalse)
+Quit method
+# --- history
+# 07-09-04 PWM   Created.

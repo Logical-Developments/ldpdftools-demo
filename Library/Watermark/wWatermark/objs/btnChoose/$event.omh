@@ -1,0 +1,10 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	Do FileOps.$getfilename(isPathToPDF,'Where is the PDF file?')
+	If isPathToPDF<>''
+		Calculate vsPath as con('file:///',replaceall(isPathToPDF,' ','%20')) ## replace spaces with +
+		Do $cwind.$objs.objBrowser.$urlorcontrolname.$assign(vsPath)
+	End If
+	Do $cwind.$redraw()
+	Quit method
+	# --- history
+	# 12-02-21 PWM   Created.
