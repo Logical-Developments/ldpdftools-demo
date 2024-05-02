@@ -30,9 +30,9 @@ explanation of how the JavaScript worker is designed.
 
 * Open Terminal
 
-* Change directory to the _jsworker_ folder 
+* Change directory to the _jsworker/ldpdftools_ folder 
 
-* Run _npm install ldpdftools_
+* Run _npm update_
 
 * Open the Watermark.lbs library in Omnis
 
